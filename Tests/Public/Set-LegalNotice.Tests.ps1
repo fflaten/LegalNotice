@@ -14,16 +14,30 @@ Describe "Set-LegalNotice" {
             if(Test-Path -Path $path) { Remove-Item -Path $path }
         }
 
-        clean
-
         It "Generate file with valid input and path" {
-            {Set-LegalNotice -Caption "My Test Title" -Text "My Test Text" -Path $path } | Should -Not -Throw
+            clean
+
+            $caption = "My Test Title"
+            $text = "My Test Text"
+            $expected = @'
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
+"LegalNoticeCaption"="My Test Title"
+"LegalNoticeText"=hex(1):4D,00,79,00,20,00,54,00,65,00,73,00,74,00,20,00,54,00,65,00,78,00,74,00,00,00
+
+'@
+
+            {Set-LegalNotice -Caption $caption -Text $text -Path $path } | Should -Not -Throw
+            Get-Content -Path $path -Raw | Should -BeExactly $expected
         }
     }
 
     Context "ParamterSet 'Online'" {
         It "Throws NotImplemented-error on usage" {
-            { Set-LegalNotice -Caption "My Test Title" -Text "My Test Text" -ErrorAction Stop } | Should -Throw
+            $caption = "My Test Title"
+            $text = "My Test Text"
+            { Set-LegalNotice -Caption $caption -Text $text -ErrorAction Stop } | Should -Throw
         }
     }
 }
