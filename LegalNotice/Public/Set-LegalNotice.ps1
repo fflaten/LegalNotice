@@ -34,7 +34,7 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
 "LegalNoticeCaption"="$($Caption.Trim())"
-"LegalNoticeText"=$hex
+"LegalNoticeText"=$hexText
 "@
             Set-Content -Path $Path -Value $content
             if($?) {
