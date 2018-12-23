@@ -16,7 +16,7 @@
         # Desired path for legal notice reg-file for offline usage
         [Parameter(ParameterSetName='File')]
         [string]
-        $Path = ".\LegalNotice.reg",
+        $Path = ".\LegalNotice.reg"
     )
 
     begin {
@@ -37,8 +37,9 @@ Windows Registry Editor Version 5.00
 "LegalNoticeText"=$hex
 "@
             Set-Content -Path $Path -Value $content
-            Write-Host "Legal notice registry-file saved to:"
-            Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
+            if($?) {
+                Write-Host "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
+            }
         }
 
     }
