@@ -21,16 +21,16 @@ ModuleVersion = '0.0.1'
 GUID = 'e7818596-4158-4207-aa93-ef733a32df09'
 
 # Author of this module
-Author = 'frode'
+Author = 'Frode Flaten'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
+CompanyName = 'Frode Flaten'
 
 # Copyright statement for this module
-Copyright = '(c) frode. All rights reserved.'
+Copyright = '2018 (c) Frode Flaten. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+ Description = 'Powershell module for managing legal notice (pre-logon message) on Windows'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -69,7 +69,7 @@ Copyright = '(c) frode. All rights reserved.'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = 'Set-LegalNotice'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
