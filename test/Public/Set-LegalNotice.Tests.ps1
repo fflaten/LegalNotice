@@ -1,6 +1,4 @@
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
-. ("$here\$sut" -replace '\\Tests\\', '\LegalNotice\')
+. $PSScriptRoot\..\Shared.ps1
 
 Describe "Set-LegalNotice" {
     It "Function loaded" {

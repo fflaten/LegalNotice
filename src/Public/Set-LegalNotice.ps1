@@ -1,4 +1,5 @@
 ﻿function Set-LegalNotice {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
         # Caption/Title for the legal notice
@@ -21,7 +22,7 @@
 
     begin {
         if ($psCmdlet.ParameterSetName -eq 'File') {
-            $hexText = "hex(1):$(([System.Text.Encoding]::Unicode.GetBytes($Text) | % { "{0:X2}" -f $_ }) -join ','),00,00"
+            $hexText = "hex(1):$(([System.Text.Encoding]::Unicode.GetBytes($Text) | Foreach-Object { "{0:X2}" -f $_ }) -join ','),00,00"
         } else {
             Write-Error "Online-functionality not yet implemented. Use Path-parameter to generate registry-file for import." -Category NotImplemented
         }
@@ -38,7 +39,7 @@ Windows Registry Editor Version 5.00
 "@
             Set-Content -Path $Path -Value $content
             if($?) {
-                Write-Host "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
+                Write-Verbose "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
             }
         }
 

@@ -25,7 +25,15 @@ jobs:
       vmImage: vs2017-win2016
     steps:
     - powershell: |
-        .\build.ps1 -Verbose
+        #Install nuget provider
+        Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+        #Install modules
+        Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+        Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -AllowClobber
+        Install-Module psake -Force -Scope CurrentUser
+      displayName: 'Install prereqs'
+    - powershell: |
+        Invoke-PSake .\build.psake.ps1 -taskList Test
       displayName: 'Build and Test'
     - task: PublishTestResults@2
       inputs:
