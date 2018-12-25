@@ -1,4 +1,5 @@
-function Set-LegalNotice {
+﻿function Set-LegalNotice {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
         # Caption/Title for the legal notice
@@ -38,7 +39,7 @@ Windows Registry Editor Version 5.00
 "@
             Set-Content -Path $Path -Value $content
             if($?) {
-                Write-Host "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
+                Write-Verbose "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
             }
         }
 
