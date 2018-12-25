@@ -20,7 +20,7 @@
 # comment-based help for your exported commands.  platyPS then generates
 # a help file for your module from the markdown files.
 #
-# The Install task simplies copies the module folder under $OutDir to your
+# The Install task simply copies the module folder under $OutDir to your
 # profile's Modules folder.
 #
 # The Test task invokes Pester on the $TestRootDir.
@@ -409,6 +409,8 @@ Task Test -depends Build -requiredVariables TestRootDir, ModuleName, CodeCoverag
         # To control the Pester code coverage, a boolean $CodeCoverageEnabled is used.
         if ($CodeCoverageEnabled) {
             $testing.CodeCoverage = $CodeCoverageFiles
+            $testing.CodeCoverageOutputFile = $CodeCoverageOutputFile
+            $testing.CodeCoverageOutputFileFormat = $CodeCoverageOutputFileFormat
         }
 
         $testResult = Invoke-Pester @testing

@@ -1,2 +1,6 @@
 # Don't checkin the Release output dir.
 Release/
+
+# Pester-results
+TestResults.xml
+CodeCoverage.xml
