@@ -1,4 +1,4 @@
-﻿function Set-LegalNotice {
+function Set-LegalNotice {
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
         # Caption/Title for the legal notice
@@ -21,7 +21,7 @@
 
     begin {
         if ($psCmdlet.ParameterSetName -eq 'File') {
-            $hexText = "hex(1):$(([System.Text.Encoding]::Unicode.GetBytes($Text) | % { "{0:X2}" -f $_ }) -join ','),00,00"
+            $hexText = "hex(1):$(([System.Text.Encoding]::Unicode.GetBytes($Text) | Foreach-Object { "{0:X2}" -f $_ }) -join ','),00,00"
         } else {
             Write-Error "Online-functionality not yet implemented. Use Path-parameter to generate registry-file for import." -Category NotImplemented
         }
