@@ -1,0 +1,17 @@
+resources:
+- repo: self
+
+queue:
+  name: Hosted VS2017
+
+steps:
+- powershell: ./build.ps1
+  arguments: '-Verbose'
+  displayName: 'Build and Test'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testResultsFormat: NUnit
+    testResultsFiles: '**/TestResults.xml'
+    testRunTitle: 'PS_Win2016'
