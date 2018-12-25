@@ -1,23 +1,34 @@
-trigger: none
-pr: none
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - .vscode/*
+    - README.md
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - .vscode/*
+    - README.md
 
 resources:
 - repo: self
 
-queue:
-  name: Hosted VS2017
-
-steps:
-- task: PowerShell@2
-  displayName: 'Build and Test'
-  inputs:
-    targetType: 'filePath'
-    filePath: 'build.ps1'
-    arguments: '-Verbose'
-
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results'
-  inputs:
-    testResultsFormat: NUnit
-    testResultsFiles: '**/TestResults.xml'
-    testRunTitle: 'PS_Win2016'
+jobs:
+  - job: Build_PS_Win2016
+    pool:
+      vmImage: vs2017-win2016
+    steps:
+    - powershell: |
+        .\build.ps1 -Verbose
+      displayName: 'Build and Test'
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle: 'PS_Win2016'
+      displayName: 'Publish Test Results'
