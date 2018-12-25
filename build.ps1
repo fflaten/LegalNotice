@@ -1,8 +1,4 @@
-#Install nuget provider
-#Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
-#Install modules
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -AllowClobber
+#Requires -Modules psake
 
-#Run tests
-$TestFile = "$PSScriptRoot\TestResults.xml"
-Invoke-Pester -PassThru -OutputFormat NUnitXml -OutputFile $testFile
+# Builds the module by invoking psake on the build.psake.ps1 script.
+Invoke-PSake $PSScriptRoot\build.psake.ps1 -taskList Build
