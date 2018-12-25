@@ -11,7 +11,7 @@ steps:
 - task: PowerShell@2
   displayName: 'Build and Test'
   inputs:
-    targetType: ./
+    targetType: 'filePath'
     filePath: build.ps1
     arguments: '-Verbose'
 
