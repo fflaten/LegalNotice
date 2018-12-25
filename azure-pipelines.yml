@@ -12,7 +12,7 @@ steps:
   displayName: 'Build and Test'
   inputs:
     targetType: 'filePath'
-    filePath: build.ps1
+    filePath: 'build.ps1'
     arguments: '-Verbose'
 
 - task: PublishTestResults@2
