@@ -33,7 +33,7 @@ jobs:
         Install-Module psake -Force -Scope CurrentUser
       displayName: 'Install prereqs'
     - powershell: |
-        Invoke-PSake .\build.psake.ps1 -taskList Test -Verbose
+        Invoke-PSake .\build.psake.ps1 -taskList Test
       displayName: 'Build and Test'
     - task: PublishTestResults@2
       inputs:
