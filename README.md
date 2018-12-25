@@ -1,6 +1,15 @@
 # LegalNotice
 
-[![Build Status](https://flaten.visualstudio.com/PSLegalNotice/_apis/build/status/PSLegalNotice-CI)](https://flaten.visualstudio.com/PSLegalNotice/_build/latest?definitionId=3)
+ Branch | Azure Pipelines CI
+| ------ | -------------------------------------- |
+| dev    | [![ap-image-dev][]][ap-site-dev]       |
+| master | [![ap-image-master][]][ap-site-master] |
 
-Powershell module for managing legal notice (pre-logon message) on Windows
+## Introduction
 
+Powershell module for managing legal notice (pre-logon message) on Windows.
+
+[ap-image-dev]: https://flaten.visualstudio.com/PSLegalNotice/_apis/build/status/PSLegalNotice-CI?branchName=dev
+[ap-site-dev]: https://flaten.visualstudio.com/PSLegalNotice/_build/latest?definitionId=3
+[ap-image-master]: https://flaten.visualstudio.com/PSLegalNotice/_apis/build/status/PSLegalNotice-CI?branchName=master
+[ap-site-master]: https://flaten.visualstudio.com/PSLegalNotice/_build/latest?definitionId=3
