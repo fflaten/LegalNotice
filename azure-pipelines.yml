@@ -28,11 +28,12 @@ jobs:
         #Install nuget provider
         Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
         #Install modules
+        Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
         Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -AllowClobber
         Install-Module psake -Force -Scope CurrentUser
       displayName: 'Install prereqs'
     - powershell: |
-        .\build.ps1 -Verbose
+        Invoke-PSake .\build.psake.ps1 -taskList Test -Verbose
       displayName: 'Build and Test'
     - task: PublishTestResults@2
       inputs:
