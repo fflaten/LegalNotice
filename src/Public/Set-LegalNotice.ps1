@@ -1,20 +1,37 @@
-﻿function Set-LegalNotice {
+﻿<#
+.SYNOPSIS
+    Configure pre-logon message in Windows using the legal notice screen
+.DESCRIPTION
+    Configures the legal notice to display a pre-logon message that requires the user to press OK to continue.
+
+    This function can be used to enable the message directly or generate a reg-file to be deployed using ex. Group Policy.
+.EXAMPLE
+    PS C:\> Set-LegalNotice -Caption "Important Title" -Text "Do you really need this computer?" -Path .\MyLegalNotice.reg
+
+    Generates a reg-file that can be deployed to present the message and title specified before the user sees the logon screen.
+.NOTES
+    Author: Frode Flaten
+    Date created: 26.12.2018
+    Version: 0.1.0
+#>
+function Set-LegalNotice {
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
-        # Caption/Title for the legal notice
+        #Caption/Title for the legal notice
         [Parameter(Mandatory)]
         [string]
         $Caption,
-        # Text for the legal notice
+        #Text for the legal notice
         [Parameter(Mandatory)]
         [string]
         $Text,
-        # Computers to apply legal otice on
+        #Computers to apply legal otice on
         [Parameter(ParameterSetName='Online')]
         [string[]]
         $ComputerName = @($env:COMPUTERNAME),
-        # Desired path for legal notice reg-file for offline usage
+        #Desired path for legal notice reg-file for offline usage
         [Parameter(ParameterSetName='File')]
         [string]
         $Path = ".\LegalNotice.reg"
