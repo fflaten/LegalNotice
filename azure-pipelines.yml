@@ -41,3 +41,7 @@ jobs:
         testResultsFiles: '**/TestResults.xml'
         testRunTitle: 'PS_Win2016'
       displayName: 'Publish Test Results'
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        summaryFileLocation: '**/CodeCoverage.xml'
+      displayName: 'Publish Code Coverage'

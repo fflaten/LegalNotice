@@ -105,6 +105,17 @@ Properties {
     [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseDeclaredVarsMoreThanAssigments', '')]
     $CodeCoverageFiles = "$SrcRootDir\*.ps1", "$SrcRootDir\*.psm1"
 
+    # Specifies an output file path to send to Invoke-Pester's -CodeCoverageOutputFile parameter.
+    # This is typically used to write code coverage results so that they can be sent to a CI
+    # system like AppVeyor or Azure Pipelines.
+    [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseDeclaredVarsMoreThanAssigments', '')]
+    $CodeCoverageOutputFile = "$PSScriptRoot\CodeCoverage.xml"
+
+    # Specifies the code coverage output format to use when the CodeCoverageOutputFile property is given
+    # a path. This parameter is passed through to Invoke-Pester's -CodeCoverageOutputFile parameter.
+    [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseDeclaredVarsMoreThanAssigments', '')]
+    $CodeCoverageOutputFileFormat = "JaCoCo"
+
     # -------------------- Publishing properties ------------------------------
 
     # Your NuGet API key for the PSGallery.  Leave it as $null and the first time you publish,
