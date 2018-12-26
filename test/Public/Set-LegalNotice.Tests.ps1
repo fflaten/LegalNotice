@@ -1,18 +1,36 @@
 . $PSScriptRoot\..\Shared.ps1
 
 Describe "Set-LegalNotice" {
-    It "Function loaded" {
+
+    $FilePath = "TestDrive:\LegalNotice.reg"
+
+    function clean {
+        if(Test-Path -Path $FilePath) { Remove-Item -Path $FilePath }
+    }
+
+    Context "Common tests" {
+        It "Function is available after import" {
         Get-Command Set-LegalNotice | Should -Be $true
     }
 
-    Context "ParamterSet 'File'" {
-        $path = "TestDrive:\LegalNotice.reg"
+        It "Throws error when caption contains linebreak" {
+            clean
+
+            $caption = @"
+Line1
+Line2
+"@
+            $text = "My Test Text"
+            { Set-LegalNotice -Caption $caption -Text $text -FilePath $FilePath -ErrorAction Stop } | Should -Throw
+        }
 
         function clean {
             if(Test-Path -Path $path) { Remove-Item -Path $path }
         }
 
-        It "Generate file with valid input and path" {
+    Context "ParamterSet 'File'" {
+
+        It "Generates file with valid input and path" {
             clean
 
             $caption = "My Test Title"
@@ -26,9 +44,10 @@ Windows Registry Editor Version 5.00
 
 '@
 
-            {Set-LegalNotice -Caption $caption -Text $text -Path $path } | Should -Not -Throw
-            Get-Content -Path $path -Raw | Should -BeExactly $expected
+            { Set-LegalNotice -Caption $caption -Text $text -FilePath $FilePath -ErrorAction Stop } | Should -Not -Throw
+            Get-Content -Path $FilePath -Raw | Should -BeExactly $expected
         }
+
     }
 
     Context "ParamterSet 'Online'" {

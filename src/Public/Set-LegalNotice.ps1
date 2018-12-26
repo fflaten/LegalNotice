@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<#
 .SYNOPSIS
     Configure pre-logon message in Windows using the legal notice screen
@@ -16,11 +17,21 @@
 #>
 function Set-LegalNotice {
 
+=======
+function Set-LegalNotice {
+>>>>>>> 2d37057... Renamed Path-parameter in Set-LegalNotice and added Caption-validation
     [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
         #Caption/Title for the legal notice
         [Parameter(Mandatory)]
+        [ValidateScript({
+            if($_ -notmatch '\n|\r') {
+                $true
+            } else {
+                throw "Caption cannot contain linebreaks."
+            }
+        })]
         [string]
         $Caption,
         #Text for the legal notice
@@ -34,7 +45,7 @@ function Set-LegalNotice {
         #Desired path for legal notice reg-file for offline usage
         [Parameter(ParameterSetName='File')]
         [string]
-        $Path = ".\LegalNotice.reg"
+        $FilePath = ".\LegalNotice.reg"
     )
 
     begin {
@@ -54,7 +65,7 @@ Windows Registry Editor Version 5.00
 "LegalNoticeCaption"="$($Caption.Trim())"
 "LegalNoticeText"=$hexText
 "@
-            Set-Content -Path $Path -Value $content
+            Set-Content -Path $FilePath -Value $content
             if($?) {
                 Write-Verbose "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
             }
