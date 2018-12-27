@@ -10,8 +10,8 @@ Describe "Set-LegalNotice" {
 
     Context "Common tests" {
         It "Function is available after import" {
-        Get-Command Set-LegalNotice | Should -Be $true
-    }
+            Get-Command Set-LegalNotice | Should -Be $true
+        }
 
         It "Throws error when caption contains linebreak" {
             clean
@@ -24,9 +24,7 @@ Line2
             { Set-LegalNotice -Caption $caption -Text $text -FilePath $FilePath -ErrorAction Stop } | Should -Throw
         }
 
-        function clean {
-            if(Test-Path -Path $path) { Remove-Item -Path $path }
-        }
+    }
 
     Context "ParamterSet 'File'" {
 
@@ -51,10 +49,51 @@ Windows Registry Editor Version 5.00
     }
 
     Context "ParamterSet 'Online'" {
-        It "Throws NotImplemented-error on usage" {
+
+        BeforeAll {
+            #Set up testkey
+            $regpath = "HKCU:\SOFTWARE\PSLegalNotice-test"
+            New-Item -Path $regpath -ItemType Key
+        }
+
+        #Had to use -ModuleName to make it call Invoke-Command. Why?
+        Mock -CommandName Invoke-Command -ModuleName PSLegalNotice {
+            $regpath = "HKCU:\SOFTWARE\PSLegalNotice-test"
+            Set-ItemProperty -Path $regpath -Name "$($ComputerName)-LegalNoticeCaption" -Value $Caption
+            Set-ItemProperty -Path $regpath -Name "$($ComputerName)-LegalNoticeText" -Value $Text
+        }
+
+        $env:COMPUTERNAME, "localhost" | Foreach-Object {
+            It "Works when called multiple times - '$_'" {
+                $caption = "My Test Title"
+                $text = "My Test Text"
+
+                { Set-LegalNotice -Caption $caption -Text $text -ComputerName $_ -ErrorAction Stop } | Should -Not -Throw
+
+                $t = Get-ItemProperty -Path $regpath
+                $t."$($_)-LegalNoticeCaption" | Should -BeExactly $caption
+                $t."$($_)-LegalNoticeText" | Should -BeExactly $Text
+
+                Assert-MockCalled -CommandName Invoke-Command -ModuleName PSLegalNotice -Times 1 -ParameterFilter { $ComputerName -eq $_ }
+            }
+        }
+
+        It "Works using array as vale for -ComputerName" {
+            $computers = @($env:COMPUTERNAME, "localhost")
             $caption = "My Test Title"
             $text = "My Test Text"
-            { Set-LegalNotice -Caption $caption -Text $text -ErrorAction Stop } | Should -Throw
+            Set-LegalNotice -Caption $caption -Text $text -ComputerName $computers -ErrorAction Stop
+            Assert-MockCalled -CommandName Invoke-Command -ModuleName PSLegalNotice -Times 2 -ParameterFilter { $ComputerName -in $computers }
         }
+
+        AfterEach {
+            Remove-ItemProperty $regpath -Name "*-LegalNoticeCaption"
+            Remove-ItemProperty $regpath -Name "*-LegalNoticeText"
+        }
+
+        AfterAll {
+            Remove-Item -Path $regpath -Recurse
+        }
+
     }
 }

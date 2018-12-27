@@ -38,7 +38,7 @@ function Set-LegalNotice {
         [Parameter(Mandatory)]
         [string]
         $Text,
-        #Computers to apply legal otice on
+        # Computers to apply legal notice on
         [Parameter(ParameterSetName='Online')]
         [string[]]
         $ComputerName = @($env:COMPUTERNAME),
@@ -51,8 +51,6 @@ function Set-LegalNotice {
     begin {
         if ($psCmdlet.ParameterSetName -eq 'File') {
             $hexText = "hex(1):$(([System.Text.Encoding]::Unicode.GetBytes($Text) | Foreach-Object { "{0:X2}" -f $_ }) -join ','),00,00"
-        } else {
-            Write-Error "Online-functionality not yet implemented. Use Path-parameter to generate registry-file for import." -Category NotImplemented
         }
     }
 
@@ -67,10 +65,29 @@ Windows Registry Editor Version 5.00
 "@
             Set-Content -Path $FilePath -Value $content
             if($?) {
-                Write-Verbose "Legal notice registry-file saved to: $(Resolve-Path -Path $Path | Select-Object -ExpandProperty Path)"
+                Write-Verbose "Legal notice registry-file saved to: $(Resolve-Path -Path $FilePath | Select-Object -ExpandProperty Path)"
+            }
+        } else {
+            #Online
+            foreach ($c in $ComputerName) {
+                Write-Verbose "Applying legal notice to '$c'"
+                if($c -ne $env:COMPUTERNAME -and $c -ne 'localhost') {
+                    #Remote machine
+                    Invoke-Command -ComputerName $c -ScriptBlock {
+                        $regpath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+                        Set-ItemProperty -Path $regpath -Name LegalNoticeCaption -Value $Using:Caption
+                        Set-ItemProperty -Path $regpath -Name LegalNoticeText -Value $Using:Text
+                    }
+                } else {
+                    #Local machine
+                    Invoke-Command -ScriptBlock {
+                        $regpath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+                        Set-ItemProperty -Path $regpath -Name LegalNoticeCaption -Value $Caption -WhatIf
+                        Set-ItemProperty -Path $regpath -Name LegalNoticeText -Value $Text -WhatIf
+                    }
+                }
             }
         }
-
     }
 
     end {
