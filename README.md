@@ -1,4 +1,8 @@
-# LegalNotice
+## Work in progress
+
+Not ready for use. Using module to test CI and build-script
+
+# PSLegalNotice
 
  Branch | Azure Pipelines CI
 | ------ | -------------------------------------- |
