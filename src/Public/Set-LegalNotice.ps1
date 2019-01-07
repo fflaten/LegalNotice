@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿<#
+<#
 .SYNOPSIS
     Configure pre-logon message in Windows using the legal notice screen
 .DESCRIPTION
@@ -17,13 +16,10 @@
 #>
 function Set-LegalNotice {
 
-=======
-function Set-LegalNotice {
->>>>>>> 2d37057... Renamed Path-parameter in Set-LegalNotice and added Caption-validation
     [System.Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding(DefaultParameterSetName='Online')]
     param (
-        #Caption/Title for the legal notice
+        # Caption/Title for the legal notice
         [Parameter(Mandatory)]
         [ValidateScript({
             if($_ -notmatch '\n|\r') {
@@ -34,7 +30,7 @@ function Set-LegalNotice {
         })]
         [string]
         $Caption,
-        #Text for the legal notice
+        # Text for the legal notice
         [Parameter(Mandatory)]
         [string]
         $Text,
@@ -42,7 +38,7 @@ function Set-LegalNotice {
         [Parameter(ParameterSetName='Online')]
         [string[]]
         $ComputerName = @($env:COMPUTERNAME),
-        #Desired path for legal notice reg-file for offline usage
+        # Desired path for legal notice reg-file for offline usage
         [Parameter(ParameterSetName='File')]
         [string]
         $FilePath = ".\LegalNotice.reg"
