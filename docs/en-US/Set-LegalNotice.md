@@ -19,7 +19,7 @@ Set-LegalNotice -Caption <String> -Text <String> [-ComputerName <String[]>] [<Co
 
 ### File
 ```
-Set-LegalNotice -Caption <String> -Text <String> [-Path <String>] [<CommonParameters>]
+Set-LegalNotice -Caption <String> -Text <String> [-FilePath <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,7 +84,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
+### -FilePath
 Desired path for legal notice reg-file for offline usage
 
 ```yaml
